@@ -15,8 +15,30 @@ body, html {
     pointer-events: none; /* 캔버스 클릭 방해 금지 */
 }
 
+/* 상단 카피 스타일 */
+.top-header {
+    margin-top: 10px;
+}
+
+.hero-text {
+    font-size: 4.5rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.25); /* 은은하게 빛나는 느낌 */
+    letter-spacing: 15px;
+    text-shadow: 0 0 20px rgba(100, 255, 218, 0.1);
+    
+    /* 사용자 선택 방지 (배경처럼 느껴지도록) */
+    user-select: none;
+    transition: color 0.5s ease;
+}
+
+/* 마우스를 올렸을 때만 살짝 더 밝아지는 효과를 주고 싶다면 추가 */
+.hero-text:hover {
+    color: rgba(255, 255, 255, 0.4);
+}
+
 nav {
-    margin-top: 10px; pointer-events: auto;
+    margin-bottom: 10px; pointer-events: auto;
 }
 
 nav button {
@@ -30,18 +52,6 @@ nav button {
     width: 85%;
     max-width: 600px;
     pointer-events: auto;
-}
-
-/* 상단 카피 스타일 */
-.top-header {
-    margin-top: 10px;
-}
-.hero-text {
-    font-size: 4.5rem;
-    font-weight: 800;
-    color: rgba(100, 255, 218, 0.2); /* 은은하게 빛나는 느낌 */
-    letter-spacing: 10px;
-    text-shadow: 0 0 20px rgba(100, 255, 218, 0.1);
 }
 
 /* 입력 섹션 가시성 개선 */
@@ -104,4 +114,14 @@ textarea {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.4);
     letter-spacing: 1px;
+}
+
+.top-header, 
+nav, 
+.container, 
+.footer,
+#dump-btn,
+button,
+textarea {
+    pointer-events: auto; /* 중요: 이 요소들은 다시 마우스 반응을 함 */
 }
