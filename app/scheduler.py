@@ -18,6 +18,6 @@ async def delete_old_worries():
     print(f"[{datetime.now()}] 24시간 지난 고민들을 청소했습니다.")
 
 def start_scheduler():
-    # 24시간마다 실행
-    scheduler.add_job(delete_old_worries, 'interval', hours=24)
+    # 1시간마다 실행
+    scheduler.add_job(delete_old_worries, 'interval', hours=1)
     scheduler.start()
