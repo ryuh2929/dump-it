@@ -6,6 +6,8 @@ from . import crud, models, schemas
 from .database import engine, Base, get_db
 from .scheduler import start_scheduler
 
+from fastapi.staticfiles import StaticFiles
+
 app = FastAPI(title="DumpIt API")
 
 # 서버 시작 시 DB 테이블 생성 및 스케줄러 가동
@@ -37,3 +39,7 @@ async def read_my_worries(user_id: str, db: AsyncSession = Depends(get_db)):
         select(models.Worry).where(models.Worry.user_id == user_id).order_by(models.Worry.created_at.desc())
     )
     return result.scalars().all()
+    
+# 4. 정적 파일 서빙 (HTML, CSS, JS 등)
+# 정적 파일 경로 추가 (반드시 API 경로들보다 아래에 작성)
+app.mount("/", StaticFiles(directory="app/static", html=True), name="static")
