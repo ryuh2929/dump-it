@@ -1,64 +1,20 @@
-from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from .database import engine, Base, get_db
+from .scheduler import start_scheduler
+import uvicorn
 
-from starlette.middleware.sessions import SessionMiddleware
+app = FastAPI()
 
-from app.core.config import get_settings
-from app.db.init_db import init_db, dispose_db
+# 앱 시작 시 DB 테이블 생성 및 스케줄러 가동
+@app.on_event("startup")
+async def startup():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    start_scheduler()
 
+@app.get("/")
+def read_root():
+    return {"message": "DumpIt Server is running!"}
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """
-    Asynchronous context manager for managing the lifespan of the FastAPI application.
-
-    Parameters:
-    - app (FastAPI): The FastAPI application.
-
-    Yields:
-    None
-
-    Usage:
-    ```
-    async with lifespan(app):
-        # Code to be executed within the lifespan of the application
-    ```
-    """
-    await init_db()
-    yield
-    await dispose_db()
-
-app = FastAPI(
-    debug=get_settings().debug,
-    lifespan=lifespan,
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json",
-    root_path="/api/v1",
-)
-
-# ADD MIDDLEWARES
-## ADD SESSION MIDDLEWARE
-
-
-## ADD CORS MIDDLEWARE
-
-
-
-# ADD ROUTERS
-
-
-
-@app.get("/", include_in_schema=False)
-@app.head("/", include_in_schema=False)
-async def read_root(request: Request):
-    base_url = request.base_url._url.rstrip("/")
-    return {
-        "message": "I'm alive!",
-        "docs": {
-            "redoc": f"{base_url}/api/redoc",
-            "swagger": f"{base_url}/api/docs",
-            "openapi": f"{base_url}/api/openapi.json",
-        },
-    }
+# 여기에 고민 저장(POST), 조회(GET) API를 추가할 예정입니다.
