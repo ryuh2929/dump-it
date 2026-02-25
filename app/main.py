@@ -1,64 +1,45 @@
-from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
+from typing import List
 
-from starlette.middleware.sessions import SessionMiddleware
+from . import crud, models, schemas
+from .database import engine, Base, get_db
+from .scheduler import start_scheduler
 
-from app.core.config import get_settings
-from app.db.init_db import init_db, dispose_db
+from fastapi.staticfiles import StaticFiles
 
+app = FastAPI(title="DumpIt API")
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """
-    Asynchronous context manager for managing the lifespan of the FastAPI application.
+# 서버 시작 시 DB 테이블 생성 및 스케줄러 가동
+@app.on_event("startup")
+async def startup():
+    async with engine.begin() as conn:
+        # 개발 초기에는 Base.metadata.create_all을 사용해 테이블을 자동 생성합니다.
+        await conn.run_sync(Base.metadata.create_all)
+    start_scheduler()
 
-    Parameters:
-    - app (FastAPI): The FastAPI application.
+# 1. 고민 저장 API
+@app.post("/worries", response_model=schemas.WorryRead)
+async def create_worry(worry: schemas.WorryCreate, db: AsyncSession = Depends(get_db)):
+    return await crud.create_worry(db=db, worry=worry)
 
-    Yields:
-    None
+# 2. 모든 고민 조회 API
+@app.get("/worries", response_model=List[schemas.WorryRead])
+async def read_worries(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
+    worries = await crud.get_worries(db, skip=skip, limit=limit)
+    return worries
 
-    Usage:
-    ```
-    async with lifespan(app):
-        # Code to be executed within the lifespan of the application
-    ```
-    """
-    await init_db()
-    yield
-    await dispose_db()
-
-app = FastAPI(
-    debug=get_settings().debug,
-    lifespan=lifespan,
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json",
-    root_path="/api/v1",
-)
-
-# ADD MIDDLEWARES
-## ADD SESSION MIDDLEWARE
-
-
-## ADD CORS MIDDLEWARE
-
-
-
-# ADD ROUTERS
-
-
-
-@app.get("/", include_in_schema=False)
-@app.head("/", include_in_schema=False)
-async def read_root(request: Request):
-    base_url = request.base_url._url.rstrip("/")
-    return {
-        "message": "I'm alive!",
-        "docs": {
-            "redoc": f"{base_url}/api/redoc",
-            "swagger": f"{base_url}/api/docs",
-            "openapi": f"{base_url}/api/openapi.json",
-        },
-    }
+# 3. 내 고민만 조회 API (UUID 기반 필터링은 나중에 CRUD에 추가 가능)
+@app.get("/worries/me/{user_id}", response_model=List[schemas.WorryRead])
+async def read_my_worries(user_id: str, db: AsyncSession = Depends(get_db)):
+    # crud.py에 해당 함수가 없으므로 간단히 여기서 필터링 로직을 보여줍니다.
+    # 나중에 crud.py로 옮기는 것이 깔끔합니다.
+    from sqlalchemy.future import select
+    result = await db.execute(
+        select(models.Worry).where(models.Worry.user_id == user_id).order_by(models.Worry.created_at.desc())
+    )
+    return result.scalars().all()
+    
+# 4. 정적 파일 서빙 (HTML, CSS, JS 등)
+# 정적 파일 경로 추가 (반드시 API 경로들보다 아래에 작성)
+app.mount("/", StaticFiles(directory="app/static", html=True), name="static")
