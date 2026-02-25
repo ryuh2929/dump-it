@@ -9,17 +9,25 @@
     <canvas id="canvas"></canvas>
 
     <div class="ui-layer">
+        <header class="top-header">
+            <h2 class="hero-text">FREE YOUR MIND</h2>
+        </header>
+
         <nav>
             <button onclick="switchPage('all')" id="btn-all">모두의 고민</button>
             <button onclick="switchPage('me')" id="btn-me">내 고민</button>
         </nav>
 
         <div class="container">
-            <h1 id="page-title">Dump It</h1>
-            <div class="input-section">
-                <textarea id="worryInput" placeholder="고민을 적고 엔터를 누르세요..."></textarea>
+            <div class="input-group">
+                <textarea id="worryInput" placeholder="당신의 고민을 적어보세요..."></textarea>
+                <button id="dump-btn" onclick="dumpWorry()">Dump It!</button>
             </div>
         </div>
+
+        <footer class="footer">
+            <p>24시간 후 사라지는 고민 버리는 곳 · DumpIt</p>
+        </footer>
     </div>
 
     <script src="script.js"></script>

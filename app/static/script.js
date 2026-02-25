@@ -68,6 +68,15 @@ async function loadMyWorries() {
 // 초기 로드
 loadMyWorries();
 
+
+/*
+   캔버스 애니메이션 및 데이터 시각화
+    - 고민 단어들을 노드로 표현
+    - 노드 크기는 중복 횟수에 비례
+    - 노드들은 중앙 원 주변에서 천천히 움직임
+    - 노드 간에는 일정 거리 이내일 때만 선으로 연결
+    - 페이지 전환 시 데이터 새로고침
+*/
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let nodes = [];
@@ -156,8 +165,19 @@ async function loadData() {
 
 function switchPage(page) {
     currentPage = page;
-    document.getElementById('page-title').innerText = page === 'all' ? "Everyone's" : "My Worries";
-    loadData();
+    const btnAll = document.getElementById('btn-all');
+        const btnMe = document.getElementById('btn-me');
+
+        // 활성화된 버튼 강조 효과 (옵션)
+        if (page === 'all') {
+            btnAll.style.background = 'rgba(100, 255, 218, 0.2)';
+            btnMe.style.background = 'rgba(255, 255, 255, 0.1)';
+        } else {
+            btnMe.style.background = 'rgba(100, 255, 218, 0.2)';
+            btnAll.style.background = 'rgba(255, 255, 255, 0.1)';
+        }
+
+        loadData();
 }
 
 // 실행
