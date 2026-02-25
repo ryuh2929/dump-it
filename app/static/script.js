@@ -34,6 +34,17 @@ async function dumpWorry() {
     const content = inputField.value.trim(); // 공백만 있는 경우 방지
 
     if (!content) return; // 내용 없으면 아무것도 안 함
+    
+    // 파티클 생성 위치를 왼쪽 하단으로 설정
+    const rect = inputField.getBoundingClientRect();
+    // 한 점에서 나오는 게 아니라, 입력창 하단 가로 범위 내에서 랜덤하게 생성
+    // rect.left(왼쪽 끝)부터 rect.width(너비)만큼의 범위
+    for (let i = 0; i < 80; i++) { // 개수를 조금 늘리면 더 풍성
+        const randomX = rect.left + (Math.random() * rect.width * 0.7) + rect.width * 0.05; // 입력창 가로 범위 내에서 랜덤 (중앙 70% 범위)
+        const startY = rect.bottom;
+        particles.push(new Particle(randomX, startY));
+    }
+    
 
     const response = await fetch('/worries', {
         method: 'POST',
@@ -127,6 +138,13 @@ class Node {
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
+    // 파티클 업데이트 및 그리기
+    particles = particles.filter(p => p.opacity > 0);
+    particles.forEach(p => {
+        p.update();
+        p.draw();
+    });
+    
     // 선 그리기 (랜덤하게 이어진 시냅스)
     ctx.strokeStyle = 'rgba(100, 255, 218, 0.3)';
     ctx.lineWidth = 0.5;
@@ -178,6 +196,78 @@ function switchPage(page) {
         }
 
         loadData();
+}
+
+// 5-1. 가루(파티클) 클래스 정의
+class Particle {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.angle = Math.random() * Math.PI * 2; // 시작 각도만 생성
+        this.oscillationSpeed = Math.random() * 0.05 + 0.02; // 흔들림 속도만 설정
+        this.amplitude = Math.random() * 1.0 + 0.2; // 흔들림 범위 (1.0 ~ 1.2)
+        this.size = Math.random() * 1.5 + 0.5;
+
+        // 파티클 색상 팔레트 (민트, 화이트, 아쿠아, 연청)
+        const colors = [
+            '100, 255, 218', // 메인 민트
+            '255, 255, 255', // 화이트 (반짝임)
+            '128, 222, 234', // 연한 아쿠아
+            '78, 204, 163'   // 조금 더 진한 초록빛 민트
+        ];
+        // 랜덤하게 하나 선택
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        
+        // 왼쪽 아래에서 오른쪽/아래 방향으로 살짝 퍼지게 설정
+        this.vx = Math.random() * 1.5; // 오른쪽으로 살짝 퍼짐
+        this.vy = Math.random() * 0.2;         // 아래로 떨어짐
+        
+        this.gravity = 0.001;                  // 중력 (아래로 당기는 힘)
+        this.opacity = 1;
+        this.fadeSpeed = 0.002;               // 천천히 사라짐
+        this.friction = 0.98;                 // 공기 저항
+    }
+
+    update() {
+        // [여기!] 매 프레임마다 각도를 더하고 x좌표에 반영해야 움직입니다.
+        this.angle += this.oscillationSpeed; 
+        this.x += Math.sin(this.angle) * 0.5; // 좌우 흔들림 부여
+
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += this.gravity;
+        
+        this.opacity -= this.fadeSpeed;
+    }
+
+    draw() {
+        // [수정] 미리 정해진 랜덤 색상에 현재 투명도만 적용
+        ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+        // 입자가 더 빛나 보이게 글로우 효과 살짝 추가
+        ctx.shadowBlur = 3;
+        ctx.shadowColor = `rgba(${this.color}, 0.5)`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.shadowBlur = 0; // 다음을 위해 초기화
+    }
+}
+
+let particles = []; // 파티클을 담을 배열
+
+// 5-2. 가루 흩날리기 실행 함수
+function createParticles() {
+    const inputGroup = document.querySelector('.input-group');
+    const rect = inputGroup.getBoundingClientRect();
+    
+    // 입력창 위치를 기준으로 가루 생성
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top;
+
+    for (let i = 0; i < 50; i++) {
+        particles.push(new Particle(centerX, centerY));
+    }
 }
 
 // 실행
