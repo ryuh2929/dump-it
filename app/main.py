@@ -36,4 +36,4 @@ async def read_my_worries(user_id: str, db: AsyncSession = Depends(get_db)):
     result = await db.execute(
         select(models.Worry).where(models.Worry.user_id == user_id).order_by(models.Worry.created_at.desc())
     )
-    return result.scalars().all()
+    return result.scalars().all() 

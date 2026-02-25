@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,python,venv,linux,dotenv
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,python,venv,linux,dotenv
 
+*.db
+
 ### dotenv ###
 .env
 
