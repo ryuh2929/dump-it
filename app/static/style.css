@@ -1,125 +1,37 @@
-/* 기본 배경 설정 */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    color: #e2e2e2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+body, html {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; background: #0a0a12;
+    font-family: 'Pretendard', sans-serif;
+}
+
+#canvas {
+    position: fixed; top: 0; left: 0; z-index: 1;
+}
+
+.ui-layer {
+    position: relative; z-index: 10;
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center;
+    pointer-events: none; /* 캔버스 클릭 방해 금지 */
+}
+
+nav {
+    margin-top: 20px; pointer-events: auto;
+}
+
+nav button {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: white; padding: 8px 16px; cursor: pointer; border-radius: 20px; margin: 0 5px;
 }
 
 .container {
-    width: 90%;
-    max-width: 500px;
-    padding: 40px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    text-align: center;
+    margin-top: auto; margin-bottom: 50px;
+    width: 90%; max-width: 500px; pointer-events: auto;
+    background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px);
+    padding: 20px; border-radius: 20px;
 }
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: #fff;
-    letter-spacing: -1px;
-}
-
-p {
-    font-size: 0.9rem;
-    color: #999;
-    margin-bottom: 30px;
-}
-
-/* 입력 섹션 */
-.input-section textarea {
-    width: 100%;
-    height: 120px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 15px;
-    color: #fff;
-    font-size: 1rem;
-    resize: none;
-    outline: none;
-    transition: border 0.3s;
-    box-sizing: border-box;
-}
-
-.input-section textarea:focus {
-    border-color: #4ecca3;
-}
-
-.input-section button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 15px;
-    background: #4ecca3;
-    border: none;
-    border-radius: 10px;
-    color: #1a1a2e;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: transform 0.2s, background 0.2s;
-}
-
-.input-section button:hover {
-    background: #45b391;
-    transform: translateY(-2px);
-}
-
-/* 목록 섹션 */
-.list-section {
-    margin-top: 40px;
-    text-align: left;
-}
-
-.list-section h2 {
-    font-size: 1.1rem;
-    color: #4ecca3;
-    margin-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 5px;
-}
-
-#myWorries {
-    list-style: none;
-    padding: 0;
-    max-height: 250px;
-    overflow-y: auto;
-}
-
-#myWorries li {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    border-left: 3px solid #4ecca3;
-}
-
-.content {
-    font-size: 1rem;
-    line-height: 1.5;
-    margin-bottom: 8px;
-}
-
-.time {
-    font-size: 0.75rem;
-    color: #666;
-}
-
-/* 스크롤바 커스텀 */
-#myWorries::-webkit-scrollbar {
-    width: 6px;
-}
-#myWorries::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+textarea {
+    width: 100%; height: 60px; background: transparent; border: none;
+    color: white; font-size: 1.1rem; outline: none; resize: none; text-align: center;
 }
