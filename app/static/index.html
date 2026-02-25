@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>DumpIt - 고민 쓰레기통</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🗑️ Dump It</h1>
+        <p>익명으로 고민을 버리세요. 24시간 뒤에 사라집니다.</p>
+        
+        <div class="input-section">
+            <textarea id="worryInput" placeholder="여기에 고민을 적고 버려버리세요..."></textarea>
+            <button onclick="dumpWorry()">버리기</button>
+        </div>
+
+        <div class="list-section">
+            <h2>내 고민 기록</h2>
+            <ul id="myWorries"></ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
