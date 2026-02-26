@@ -1,0 +1,127 @@
+body, html {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; background: #0a0a12;
+    font-family: 'Pretendard', sans-serif;
+}
+
+#canvas {
+    position: fixed; top: 0; left: 0; z-index: 1;
+}
+
+.ui-layer {
+    position: relative; z-index: 10;
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center;
+    pointer-events: none; /* 캔버스 클릭 방해 금지 */
+}
+
+/* 상단 카피 스타일 */
+.top-header {
+    margin-top: 10px;
+}
+
+.hero-text {
+    font-size: 4.5rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.25); /* 은은하게 빛나는 느낌 */
+    letter-spacing: 15px;
+    text-shadow: 0 0 20px rgba(100, 255, 218, 0.1);
+    
+    /* 사용자 선택 방지 (배경처럼 느껴지도록) */
+    user-select: none;
+    transition: color 0.5s ease;
+}
+
+/* 마우스를 올렸을 때만 살짝 더 밝아지는 효과를 주고 싶다면 추가 */
+.hero-text:hover {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+nav {
+    margin-bottom: 10px; pointer-events: auto;
+}
+
+nav button {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: white; padding: 8px 16px; cursor: pointer; border-radius: 20px; margin: 0 5px;
+}
+
+.container {
+    margin-top: auto;
+    margin-bottom: 60px;
+    width: 85%;
+    max-width: 600px;
+    pointer-events: auto;
+}
+
+/* 입력 섹션 가시성 개선 */
+.input-group {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    border-radius: 30px; /* 둥근 캡슐 모양 */
+    padding: 5px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.input-group:focus-within {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(100, 255, 218, 0.3);
+}
+
+textarea {
+    flex: 1;
+    height: 40px; /* 높이 축소 */
+    line-height: 40px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    resize: none;
+    padding-left: 10px;
+}
+
+/* Dump It! 버튼 스타일 */
+#dump-btn {
+    width: auto;
+    padding: 8px 20px;
+    background: rgba(100, 255, 218, 0.8);
+    color: #0a0a12;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+#dump-btn:hover {
+    background: #64ffda;
+    transform: scale(1.05);
+}
+
+/* 푸터 스타일 */
+.footer {
+    margin-top: auto;
+    padding-bottom: 20px;
+}
+.footer p {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 1px;
+}
+
+.top-header, 
+nav, 
+.container, 
+.footer,
+#dump-btn,
+button,
+textarea {
+    pointer-events: auto; /* 중요: 이 요소들은 다시 마우스 반응을 함 */
+}
