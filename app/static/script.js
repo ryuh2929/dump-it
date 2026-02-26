@@ -1,8 +1,77 @@
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let nodes = [];
+let currentPage = 'all'; // 'all' 또는 'me'
+let particles = []; // 파티클을 담을 배열
+
+// 5-1. 가루(파티클) 클래스 정의 (함수보다 위에 위치해야함)
+class Particle {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.angle = Math.random() * Math.PI * 2; // 시작 각도만 생성
+        this.oscillationSpeed = Math.random() * 0.05 + 0.02; // 흔들림 속도만 설정
+        this.amplitude = Math.random() + 0.2; // 흔들림 범위 (1.0 ~ 1.2)
+        this.size = Math.random() * 1.5 + 0.5;
+
+        // 파티클 색상 팔레트 (민트, 화이트, 아쿠아, 연청)
+        const colors = [
+            '100, 255, 218', // 메인 민트
+            '255, 255, 255', // 화이트 (반짝임)
+            '128, 222, 234', // 연한 아쿠아
+            '78, 204, 163'   // 조금 더 진한 초록빛 민트
+        ];
+        // 랜덤하게 하나 선택
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        
+        // 왼쪽 아래에서 오른쪽/아래 방향으로 살짝 퍼지게 설정
+        this.vx = Math.random() * 1.5; // 오른쪽으로 살짝 퍼짐
+        this.vy = Math.random() * 0.2;         // 아래로 떨어짐
+        
+        this.gravity = 0.001;                  // 중력 (아래로 당기는 힘)
+        this.opacity = 1;
+        this.fadeSpeed = 0.002;               // 천천히 사라짐
+        this.friction = 0.98;                 // 공기 저항
+    }
+
+    update() {
+        // [여기!] 매 프레임마다 각도를 더하고 x좌표에 반영해야 움직입니다.
+        this.angle += this.oscillationSpeed; 
+        this.x += Math.sin(this.angle) * 0.5; // 좌우 흔들림 부여
+
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += this.gravity;
+        
+        this.opacity -= this.fadeSpeed;
+    }
+
+    draw() {
+        // [수정] 미리 정해진 랜덤 색상에 현재 투명도만 적용
+        ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+        // 입자가 더 빛나 보이게 글로우 효과 살짝 추가
+        ctx.shadowBlur = 3;
+        ctx.shadowColor = `rgba(${this.color}, 0.5)`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.shadowBlur = 0; // 다음을 위해 초기화
+    }
+}
+
 // 1-1. UUID 생성 또는 가져오기
 function getUserId() {
     let uuid = localStorage.getItem('dumpit_uuid');
     if (!uuid) {
-        uuid = crypto.randomUUID(); // 최신 브라우저 지원 UUID 생성
+        if (typeof crypto.randomUUID === 'function') {
+            uuid = crypto.randomUUID(); // 최신 브라우저 지원 UUID 생성
+        } else {
+            // 하위 호환성을 위한 간단한 랜덤 ID 생성
+            uuid = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            );
+        }
         localStorage.setItem('dumpit_uuid', uuid);
     }
     return uuid;
@@ -88,10 +157,7 @@ loadMyWorries();
     - 노드 간에는 일정 거리 이내일 때만 선으로 연결
     - 페이지 전환 시 데이터 새로고침
 */
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-let nodes = [];
-let currentPage = 'all'; // 'all' 또는 'me'
+
 
 // 1. 초기 설정
 window.onresize = () => {
@@ -198,63 +264,6 @@ function switchPage(page) {
         loadData();
 }
 
-// 5-1. 가루(파티클) 클래스 정의
-class Particle {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.angle = Math.random() * Math.PI * 2; // 시작 각도만 생성
-        this.oscillationSpeed = Math.random() * 0.05 + 0.02; // 흔들림 속도만 설정
-        this.amplitude = Math.random() + 0.2; // 흔들림 범위 (1.0 ~ 1.2)
-        this.size = Math.random() * 1.5 + 0.5;
-
-        // 파티클 색상 팔레트 (민트, 화이트, 아쿠아, 연청)
-        const colors = [
-            '100, 255, 218', // 메인 민트
-            '255, 255, 255', // 화이트 (반짝임)
-            '128, 222, 234', // 연한 아쿠아
-            '78, 204, 163'   // 조금 더 진한 초록빛 민트
-        ];
-        // 랜덤하게 하나 선택
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-        
-        // 왼쪽 아래에서 오른쪽/아래 방향으로 살짝 퍼지게 설정
-        this.vx = Math.random() * 1.5; // 오른쪽으로 살짝 퍼짐
-        this.vy = Math.random() * 0.2;         // 아래로 떨어짐
-        
-        this.gravity = 0.001;                  // 중력 (아래로 당기는 힘)
-        this.opacity = 1;
-        this.fadeSpeed = 0.002;               // 천천히 사라짐
-        this.friction = 0.98;                 // 공기 저항
-    }
-
-    update() {
-        // [여기!] 매 프레임마다 각도를 더하고 x좌표에 반영해야 움직입니다.
-        this.angle += this.oscillationSpeed; 
-        this.x += Math.sin(this.angle) * 0.5; // 좌우 흔들림 부여
-
-        this.x += this.vx;
-        this.y += this.vy;
-        this.vy += this.gravity;
-        
-        this.opacity -= this.fadeSpeed;
-    }
-
-    draw() {
-        // [수정] 미리 정해진 랜덤 색상에 현재 투명도만 적용
-        ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
-        // 입자가 더 빛나 보이게 글로우 효과 살짝 추가
-        ctx.shadowBlur = 3;
-        ctx.shadowColor = `rgba(${this.color}, 0.5)`;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.shadowBlur = 0; // 다음을 위해 초기화
-    }
-}
-
-let particles = []; // 파티클을 담을 배열
 
 // 5-2. 가루 흩날리기 실행 함수
 function createParticles() {
