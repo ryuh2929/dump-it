@@ -1,3 +1,5 @@
+[![Video Label](http://img.youtube.com/vi/IArrVOU3vvg/0.jpg)](https://youtu.be/IArrVOU3vvg)
+
 # 🌪️ Dump It! (고민 쓰레기통)
 
 > **"마음속의 짐을 가루로 만들어 날려버리세요."** > 사용자의 고민을 입력받아 시각적인 파티클로 분해하고, 다른 사람들의 고민과 함께 밤하늘의 성단처럼 시각화해주는 힐링 웹 서비스입니다.
