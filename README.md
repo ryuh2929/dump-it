@@ -1,5 +1,3 @@
-[![Video Label](http://img.youtube.com/vi/IArrVOU3vvg/0.jpg)](https://youtu.be/IArrVOU3vvg)
-
 # 🌪️ Dump It! (고민 쓰레기통)
 
 > **"마음속의 짐을 가루로 만들어 날려버리세요."** > 사용자의 고민을 입력받아 시각적인 파티클로 분해하고, 다른 사람들의 고민과 함께 밤하늘의 성단처럼 시각화해주는 힐링 웹 서비스입니다.
@@ -14,6 +12,19 @@
 * **24시간 후에 사라지는 고민들**: 작성 후 24시간 뒤 자동으로 삭제.
 
 ---
+## 서비스 페이지
+* 메인 페이지
+![2026-02-26-14-41-30메인-페이지](https://github.com/user-attachments/assets/afac29e9-9241-499c-be7b-ccdab7dd5df9)
+
+* 텍스트 입력
+![2026-02-26-14-38-33텍스트-입력](https://github.com/user-attachments/assets/1d750b16-b7d6-4aca-8855-645f540880de)
+
+* 모두의 고민 /  내 고민
+![2026-02-26-14-40-29모두의-고민_-내-고민](https://github.com/user-attachments/assets/114ae9a7-6dea-4d4b-8b31-8c41567ae531)
+
+
+## 시연 영상
+https://youtu.be/IArrVOU3vvg
 
 ## 🛠 Tech Stack
 <img width="1071" height="510" alt="dumpit stack" src="https://github.com/user-attachments/assets/a36af852-2479-41d2-9c99-373ceadef200" />
