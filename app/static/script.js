@@ -205,7 +205,7 @@ class Particle {
         this.y = y;
         this.angle = Math.random() * Math.PI * 2; // 시작 각도만 생성
         this.oscillationSpeed = Math.random() * 0.05 + 0.02; // 흔들림 속도만 설정
-        this.amplitude = Math.random() * 1.0 + 0.2; // 흔들림 범위 (1.0 ~ 1.2)
+        this.amplitude = Math.random() + 0.2; // 흔들림 범위 (1.0 ~ 1.2)
         this.size = Math.random() * 1.5 + 0.5;
 
         // 파티클 색상 팔레트 (민트, 화이트, 아쿠아, 연청)
