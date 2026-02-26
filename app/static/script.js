@@ -8,15 +8,16 @@ let particles = []; // 파티클을 담을 배열
 function getUserId() {
     let uuid = localStorage.getItem('dumpit_uuid');
     if (!uuid) {
-        uuid = crypto.randomUUID(); // 최신 브라우저 지원 UUID 생성
+        if (typeof crypto.randomUUID === 'function') {
+            uuid = crypto.randomUUID(); // 최신 브라우저 지원 UUID 생성
+        } else {
+            // 하위 호환성을 위한 간단한 랜덤 ID 생성
+            uuid = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            );
+        }
         localStorage.setItem('dumpit_uuid', uuid);
-    } else {
-        // 하위 호환성을 위한 간단한 랜덤 ID 생성
-        uuid = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
     }
-    localStorage.setItem('dumpit_uuid', uuid);
     return uuid;
 }
 
