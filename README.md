@@ -61,29 +61,31 @@ pip install -r requirements.txt
 
 3. **서버 실행**
 
-**로컬에서 테스트 서버 실행**
+* **로컬에서 테스트 서버 실행**
 ```bash
 uvicorn app.main:app --reload
 
 ```
 
-**aws 인스턴스에서 서버 실행**
+* **aws 인스턴스에서 서버 실행**
 ```bash
 python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 ```
 
-**터미널 종료해도 서버 동작**
+* **터미널 종료해도 서버 동작**
 ```bash
 nohup python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 &
 
 ```
 
 4. **접속**
-**로컬 서버**
+* **로컬 서버**
+
 `http://localhost:8000`
 
-**aws 서버**
+* **aws 서버**
+ 
 `http://dumpit-lb-1591477487.us-east-1.elb.amazonaws.com/`
 
 
