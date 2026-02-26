@@ -13,6 +13,7 @@
 ---
 
 ## 🛠 Tech Stack
+<img width="1071" height="510" alt="dumpit stack" src="https://github.com/user-attachments/assets/a36af852-2479-41d2-9c99-373ceadef200" />
 
 ### Frontend
 
