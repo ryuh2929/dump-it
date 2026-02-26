@@ -1,3 +1,9 @@
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let nodes = [];
+let currentPage = 'all'; // 'all' 또는 'me'
+let particles = []; // 파티클을 담을 배열
+
 // 1-1. UUID 생성 또는 가져오기
 function getUserId() {
     let uuid = localStorage.getItem('dumpit_uuid');
@@ -94,10 +100,7 @@ loadMyWorries();
     - 노드 간에는 일정 거리 이내일 때만 선으로 연결
     - 페이지 전환 시 데이터 새로고침
 */
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-let nodes = [];
-let currentPage = 'all'; // 'all' 또는 'me'
+
 
 // 1. 초기 설정
 window.onresize = () => {
@@ -260,7 +263,6 @@ class Particle {
     }
 }
 
-let particles = []; // 파티클을 담을 배열
 
 // 5-2. 가루 흩날리기 실행 함수
 function createParticles() {
