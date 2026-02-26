@@ -75,8 +75,15 @@ python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 * **터미널 종료해도 서버 동작**
 ```bash
-nohup python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 &
+nohup python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000 &
 
+```
+
+* **서버 종료**
+
+프로세스 목록을 확인해서 `kill -9 [PID번호]` 하거나 아래 명령어로 모든 uvicorn 프로세스 종료
+```bash
+pkill -f uvicorn
 ```
 
 4. **접속**
