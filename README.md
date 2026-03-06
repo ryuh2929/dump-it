@@ -105,11 +105,11 @@ pkill -f uvicorn
 4. **접속**
 * **로컬 서버**
 
-`http://localhost:8000`
+http://localhost:8000
 
 * **aws 서버**
  
-`http://dumpit-lb-1591477487.us-east-1.elb.amazonaws.com/`
+http://dumpit-lb-1591477487.us-east-1.elb.amazonaws.com/
 
 
 ---

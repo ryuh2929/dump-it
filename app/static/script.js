@@ -19,12 +19,11 @@ class Particle {
             '100, 255, 218', // 메인 민트
             '255, 255, 255', // 화이트 (반짝임)
             '128, 222, 234', // 연한 아쿠아
-            '128, 222, 234', // 연한 아쿠아
             '78, 204, 163'   // 조금 더 진한 초록빛 민트
         ];
         // 랜덤하게 하나 선택
         this.color = colors[Math.floor(Math.random() * colors.length)];
-        
+
         // 왼쪽 아래에서 오른쪽/아래 방향으로 살짝 퍼지게 설정
         this.vx = Math.random() * 1.5; // 오른쪽으로 살짝 퍼짐
         this.vy = Math.random() * 0.2;         // 아래로 떨어짐
@@ -48,7 +47,7 @@ class Particle {
     }
 
     draw() {
-        // [수정] 미리 정해진 랜덤 색상에 현재 투명도만 적용
+        // 미리 정해진 랜덤 색상에 현재 투명도만 적용
         ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
         // 입자가 더 빛나 보이게 글로우 효과 살짝 추가
         ctx.shadowBlur = 3;
@@ -109,7 +108,7 @@ async function dumpWorry() {
     const rect = inputField.getBoundingClientRect();
     // 한 점에서 나오는 게 아니라, 입력창 하단 가로 범위 내에서 랜덤하게 생성
     // rect.left(왼쪽 끝)부터 rect.width(너비)만큼의 범위
-    for (let i = 0; i < 100; i++) { // 개수를 조금 늘리면 더 풍성
+    for (let i = 0; i < 120; i++) { // 개수를 조금 늘리면 더 풍성
         const randomX = rect.left + (Math.random() * rect.width * 0.7) + rect.width * 0.05; // 입력창 가로 범위 내에서 랜덤 (중앙 70% 범위)
         const startY = rect.bottom;
         particles.push(new Particle(randomX, startY));
@@ -214,7 +213,7 @@ function animate() {
     
     // 선 그리기 (랜덤하게 이어진 시냅스)
     ctx.strokeStyle = 'rgba(100, 255, 218, 0.3)';
-    ctx.lineWidth = 0.5;
+    ctx.lineWidth = 1;
     for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
             const dist = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
@@ -265,20 +264,6 @@ function switchPage(page) {
         loadData();
 }
 
-
-// 5-2. 가루 흩날리기 실행 함수
-function createParticles() {
-    const inputGroup = document.querySelector('.input-group');
-    const rect = inputGroup.getBoundingClientRect();
-    
-    // 입력창 위치를 기준으로 가루 생성
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top;
-
-    for (let i = 0; i < 50; i++) {
-        particles.push(new Particle(centerX, centerY));
-    }
-}
 
 // 실행
 animate();
