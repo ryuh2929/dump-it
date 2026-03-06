@@ -22,7 +22,3 @@ jobs:
             git pull origin main
             source venv/bin/activate
             pip install -r requirements.txt
-            
-            # 기존 uvicorn 프로세스 종료 후 재실행
-            pkill -f uvicorn || true
-            nohup python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000 &
