@@ -39,7 +39,20 @@ async def startup():
 # 1. 고민 저장 API
 @app.post("/worries", response_model=schemas.WorryRead)
 async def create_worry(worry: schemas.WorryCreate, db: AsyncSession = Depends(get_db)):
-    return await crud.create_worry(db=db, worry=worry)
+    # 1. 고민 저장
+    new_worry = await crud.create_worry(db=db, worry=worry)
+    # 2. 통계 업데이트 (누적 고민 수 +1)
+    await crud.update_worry_count(db=db)
+    return new_worry
+    # return await crud.create_worry(db=db, worry=worry)
+
+# 통계 데이터 조회 API 추가
+@app.get("/stats", response_model=schemas.StatsResponse)
+async def read_stats(db: AsyncSession = Depends(get_db)):
+    stats = await crud.get_stats(db)
+    if not stats:
+        raise HTTPException(status_code=404, detail="Stats not found")
+    return stats
 
 # 2. 모든 고민 조회 API
 @app.get("/worries", response_model=List[schemas.WorryRead])

@@ -145,6 +145,25 @@ async function loadMyWorries() {
     `).join('');
 }
 
+// 페이지 로드 시 통계 데이터 가져오기
+async function loadStats() {
+    try {
+        const response = await fetch('/stats');
+        const data = await response.json();
+        
+        // HTML의 해당 ID를 가진 요소에 데이터 삽입
+        document.getElementById('user-count').innerText = data.total_users;
+        document.getElementById('worry-count').innerText = data.total_worries;
+    } catch (error) {
+        console.error('통계 데이터를 불러오는데 실패했습니다:', error);
+    }
+}
+
+// 기존 페이지 초기화 코드나 window.onload에 추가
+window.addEventListener('DOMContentLoaded', (event) => {
+    loadStats();
+});
+
 // 초기 로드
 loadMyWorries();
 
