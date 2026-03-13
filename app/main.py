@@ -14,8 +14,26 @@ app = FastAPI(title="DumpIt API")
 @app.on_event("startup")
 async def startup():
     async with engine.begin() as conn:
-        # 개발 초기에는 Base.metadata.create_all을 사용해 테이블을 자동 생성합니다.
+        # 1. 테이블 생성
         await conn.run_sync(Base.metadata.create_all)
+    
+    # 2. 통계 테이블 초기값 설정
+    from .database import AsyncSessionLocal
+    from .models import Stats
+    from sqlalchemy.future import select
+
+    async with AsyncSessionLocal() as session:
+        async with session.begin():
+            # id가 1인 데이터가 있는지 확인
+            result = await session.execute(select(Stats).where(Stats.id == 1))
+            stats_entry = result.scalars().first()
+            
+            # 만약 데이터가 하나도 없다면 초기값(0, 0) 생성
+            if not stats_entry:
+                session.add(Stats(id=1, total_users=0, total_sorrows=0))
+                await session.commit()
+
+    # 3. 스케줄러 시작
     start_scheduler()
 
 # 1. 고민 저장 API
