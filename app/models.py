@@ -15,4 +15,4 @@ class Stats(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     total_users = Column(Integer, default=0)
-    total_sorrows = Column(Integer, default=0)
+    total_worries = Column(Integer, default=0)

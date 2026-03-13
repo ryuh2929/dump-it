@@ -20,7 +20,7 @@ class WorryRead(BaseModel):
 # 3. 통계 정보를 보여줄 때 쓰는 모양
 class StatsResponse(BaseModel):
     total_users: int
-    total_sorrows: int
+    total_worries: int
 
     class Config:
         from_attributes = True # SQLAlchemy 모델을 Pydantic으로 변환 허용

@@ -26,11 +26,11 @@ async def get_stats(db: AsyncSession):
     return result.scalars().first()
 
 # 누적 고민 수 업데이트
-async def update_sorrow_count(db: AsyncSession):
+async def update_worry_count(db: AsyncSession):
     result = await db.execute(select(models.Stats).where(models.Stats.id == 1))
     stats = result.scalars().first()
     if stats:
-        stats.total_sorrows += 1
+        stats.total_worries += 1
         await db.commit()
         await db.refresh(stats)
     return stats

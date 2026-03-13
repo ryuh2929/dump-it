@@ -30,7 +30,7 @@ async def startup():
             
             # 만약 데이터가 하나도 없다면 초기값(0, 0) 생성
             if not stats_entry:
-                session.add(Stats(id=1, total_users=0, total_sorrows=0))
+                session.add(Stats(id=1, total_users=0, total_worries=0))
                 await session.commit()
 
     # 3. 스케줄러 시작
