@@ -126,8 +126,17 @@ async function dumpWorry() {
 
     if (response.ok) {
         inputField.value = '';
-        // 전송 완료 후 데이터를 다시 불러와서 캔버스를 갱신함
-        await loadData();
+        // 이 유저가 처음으로 고민을 남기는 건지 확인
+        const hasContributed = localStorage.getItem('has_contributed');
+        if (!hasContributed) {
+            // 처음이라면 서버에 "실사용자 +1" 요청
+            await fetch('/stats/visit', { method: 'POST' });
+            // 다시는 안 올라가게 마킹
+            localStorage.setItem('has_contributed', 'true');
+        }
+        
+        await loadData(); // 전송 완료 후 데이터를 다시 불러와서 캔버스를 갱신함
+        await loadStats(); // 통계 숫자 갱신 (사람 수, 고민 수 포함)
     }
 }
 
@@ -144,6 +153,25 @@ async function loadMyWorries() {
         </li>
     `).join('');
 }
+
+// 페이지 로드 시 통계 데이터 가져오기
+async function loadStats() {
+    try {
+        const response = await fetch('/stats');
+        const data = await response.json();
+        
+        // HTML의 해당 ID를 가진 요소에 데이터 삽입
+        document.getElementById('user-count').innerText = data.total_users;
+        document.getElementById('worry-count').innerText = data.total_worries;
+    } catch (error) {
+        console.error('통계 데이터를 불러오는데 실패했습니다:', error);
+    }
+}
+
+// 기존 페이지 초기화 코드나 window.onload에 추가
+window.addEventListener('DOMContentLoaded', (event) => {
+    loadStats();
+});
 
 // 초기 로드
 loadMyWorries();

@@ -3,8 +3,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
 from . import crud, models, schemas
-from .database import engine, Base, get_db
+from sqlalchemy.future import select
+from .database import engine, Base, get_db, AsyncSessionLocal
 from .scheduler import start_scheduler
+from .models import Stats
 
 from fastapi.staticfiles import StaticFiles
 
@@ -13,15 +15,49 @@ app = FastAPI(title="DumpIt API")
 # 서버 시작 시 DB 테이블 생성 및 스케줄러 가동
 @app.on_event("startup")
 async def startup():
+    # 1. 테이블 생성
     async with engine.begin() as conn:
-        # 개발 초기에는 Base.metadata.create_all을 사용해 테이블을 자동 생성합니다.
         await conn.run_sync(Base.metadata.create_all)
+
+    # 2. 통계 테이블 초기값 설정
+    async with AsyncSessionLocal() as session:
+        async with session.begin():
+            # id가 1인 데이터가 있는지 확인
+            result = await session.execute(select(Stats).where(Stats.id == 1))
+            stats_entry = result.scalars().first()
+            
+            # 만약 데이터가 하나도 없다면 초기값(0, 0) 생성
+            if not stats_entry:
+                session.add(Stats(id=1, total_users=0, total_worries=0))
+                await session.commit()
+                print("📊 통계 테이블 초기값이 생성되었습니다.")
+
+    # 3. 스케줄러 시작
     start_scheduler()
 
 # 1. 고민 저장 API
 @app.post("/worries", response_model=schemas.WorryRead)
 async def create_worry(worry: schemas.WorryCreate, db: AsyncSession = Depends(get_db)):
-    return await crud.create_worry(db=db, worry=worry)
+    # 1. 고민 저장
+    new_worry = await crud.create_worry(db=db, worry=worry)
+    # 2. 통계 업데이트 (누적 고민 수 +1)
+    await crud.update_worry_count(db=db)
+    return new_worry
+    # return await crud.create_worry(db=db, worry=worry)
+
+# 통계 데이터 조회 API 추가
+@app.get("/stats", response_model=schemas.StatsResponse)
+async def read_stats(db: AsyncSession = Depends(get_db)):
+    stats = await crud.get_stats(db)
+    if not stats:
+        raise HTTPException(status_code=404, detail="Stats not found")
+    return stats
+
+# 누적 사용자 수 조회 API
+@app.post("/stats/visit")
+async def record_visit(db: AsyncSession = Depends(get_db)):
+    await crud.update_user_count(db)
+    return {"status": "success"}
 
 # 2. 모든 고민 조회 API
 @app.get("/worries", response_model=List[schemas.WorryRead])

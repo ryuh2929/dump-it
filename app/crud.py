@@ -19,3 +19,28 @@ async def get_worries(db: AsyncSession, skip: int = 0, limit: int = 100):
         select(models.Worry).order_by(models.Worry.created_at.desc()).offset(skip).limit(limit)
     )
     return result.scalars().all()
+
+# 통계 가져오기
+async def get_stats(db: AsyncSession):
+    result = await db.execute(select(models.Stats).where(models.Stats.id == 1))
+    return result.scalars().first()
+
+# 누적 고민 수 업데이트
+async def update_worry_count(db: AsyncSession):
+    result = await db.execute(select(models.Stats).where(models.Stats.id == 1))
+    stats = result.scalars().first()
+    if stats:
+        stats.total_worries += 1
+        await db.commit()
+        await db.refresh(stats)
+    return stats
+
+# 누적 사람 수 업데이트
+async def update_user_count(db: AsyncSession):
+    result = await db.execute(select(models.Stats).where(models.Stats.id == 1))
+    stats = result.scalars().first()
+    if stats:
+        stats.total_users += 1
+        await db.commit()
+        await db.refresh(stats)
+    return stats
