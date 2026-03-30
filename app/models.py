@@ -9,3 +9,10 @@ class Worry(Base):
     content = Column(String)  # 고민 내용
     user_id = Column(String)  # 브라우저 캐시용 UUID
     created_at = Column(DateTime, default=datetime.utcnow) # 생성 시간 (UTC 기준)
+
+class Stats(Base):
+    __tablename__ = "stats"
+
+    id = Column(Integer, primary_key=True, index=True)
+    total_users = Column(Integer, default=0)
+    total_worries = Column(Integer, default=0)

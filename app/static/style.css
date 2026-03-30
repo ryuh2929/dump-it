@@ -105,6 +105,37 @@ textarea {
     transform: scale(1.05);
 }
 
+/* 통계 문구 컨테이너 */
+.stats-text {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    /* 푸터보다 약간 더 밝은 흰색으로 가독성 확보 */
+    color: rgba(255, 255, 255, 0.7); /* 중앙 정렬 해제 및 왼쪽 정렬 */
+    text-align: left; 
+    /* 입력창 캡슐 모양에 맞춰 왼쪽 여백 부여 (원하는 만큼 숫자 조절) */
+    padding-left: 30px;
+    letter-spacing: 0.5px;
+    width: 100%;
+    box-sizing: border-box; /* 패딩이 너비에 영향을 주지 않도록 설정 */
+    /* 부드럽게 나타나는 애니메이션 */
+    animation: fadeIn 2s ease-in-out;
+}
+
+/* 숫자 강조 (민트색 광채) */
+.stats-text span {
+    font-weight: bold;
+    color: #4ecca3; /* 사용님이 쓰시는 진한 민트색 */
+    /* 숫자가 살짝 빛나는 효과 */
+    text-shadow: 0 0 8px rgba(78, 204, 163, 0.5);
+    margin: 0 2px;
+}
+
+/* 페이드인 애니메이션 정의 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(1px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* 푸터 스타일 */
 .footer {
     margin-top: auto;
