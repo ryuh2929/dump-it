@@ -85,6 +85,8 @@ uvicorn app.main:app --reload
 
 * **aws 인스턴스에서 서버 실행**
 ```bash
+cd dump-it/
+source venv/bin/activate
 python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 ```
