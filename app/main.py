@@ -3,8 +3,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
 from . import crud, models, schemas
-from .database import engine, Base, get_db
+from sqlalchemy.future import select
+from .database import engine, Base, get_db, AsyncSessionLocal
 from .scheduler import start_scheduler
+from .models import Stats
 
 from fastapi.staticfiles import StaticFiles
 
@@ -13,15 +15,11 @@ app = FastAPI(title="DumpIt API")
 # 서버 시작 시 DB 테이블 생성 및 스케줄러 가동
 @app.on_event("startup")
 async def startup():
+    # 1. 테이블 생성
     async with engine.begin() as conn:
-        # 1. 테이블 생성
         await conn.run_sync(Base.metadata.create_all)
-    
-    # 2. 통계 테이블 초기값 설정
-    from .database import AsyncSessionLocal
-    from .models import Stats
-    from sqlalchemy.future import select
 
+    # 2. 통계 테이블 초기값 설정
     async with AsyncSessionLocal() as session:
         async with session.begin():
             # id가 1인 데이터가 있는지 확인
@@ -32,6 +30,7 @@ async def startup():
             if not stats_entry:
                 session.add(Stats(id=1, total_users=0, total_worries=0))
                 await session.commit()
+                print("📊 통계 테이블 초기값이 생성되었습니다.")
 
     # 3. 스케줄러 시작
     start_scheduler()
@@ -53,6 +52,12 @@ async def read_stats(db: AsyncSession = Depends(get_db)):
     if not stats:
         raise HTTPException(status_code=404, detail="Stats not found")
     return stats
+
+# 누적 사용자 수 조회 API
+@app.post("/stats/visit")
+async def record_visit(db: AsyncSession = Depends(get_db)):
+    await crud.update_user_count(db)
+    return {"status": "success"}
 
 # 2. 모든 고민 조회 API
 @app.get("/worries", response_model=List[schemas.WorryRead])

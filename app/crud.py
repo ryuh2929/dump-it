@@ -34,3 +34,13 @@ async def update_worry_count(db: AsyncSession):
         await db.commit()
         await db.refresh(stats)
     return stats
+
+# 누적 사람 수 업데이트
+async def update_user_count(db: AsyncSession):
+    result = await db.execute(select(models.Stats).where(models.Stats.id == 1))
+    stats = result.scalars().first()
+    if stats:
+        stats.total_users += 1
+        await db.commit()
+        await db.refresh(stats)
+    return stats

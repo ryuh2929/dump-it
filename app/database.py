@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 # SQLite 비동기 주소 (파일명은 database.db)
 DATABASE_URL = "sqlite+aiosqlite:///./database.db"
 
-engine = create_async_engine(DATABASE_URL, echo=True)
+engine = create_async_engine(DATABASE_URL, echo=False)
 AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 Base = declarative_base()
 
