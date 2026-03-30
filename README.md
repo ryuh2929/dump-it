@@ -1,4 +1,4 @@
-# 🌪️ Dump It! (고민 쓰레기통)
+# <img src="./app/static/favicons/android-icon-192x192.png" width="48" height="48" valign="middle"> Dump It! (고민 쓰레기통)
 
 > **"마음속의 짐을 가루로 만들어 날려버리세요."**
 > 사용자의 고민을 입력받아 시각적인 파티클로 분해하고, 다른 사람들의 고민과 함께 밤하늘의 성단처럼 시각화해주는 힐링 웹 서비스입니다.
@@ -52,7 +52,7 @@ https://youtu.be/IArrVOU3vvg
 
 ## 🏗 시스템 아키텍처
 
-사용자가 접속하면 ALB를 통해 EC2 인스턴스의 8000번 포트(Uvicorn)로 연결됩니다. 데이터 일관성을 위해 로드밸런서에서 **Sticky Session**을 활성화하여 단일 SQLite DB 환경에서도 안정적인 사용자 경험을 제공합니다.
+사용자가 접속하면 ALB를 통해 EC2 인스턴스의 8000번 포트(Uvicorn)로 연결됩니다. 데이터 일관성을 위해 로드밸런서에서 **Sticky Session**을 활성화하여 단일 SQLite DB 환경에서도 안정적인 사용자 경험을 제공.
 
 ---
 
@@ -97,7 +97,7 @@ nohup python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000 &
 
 * **서버 종료**
 
-프로세스 목록을 확인해서 `kill -9 [PID번호]` 하거나 아래 명령어로 모든 uvicorn 프로세스 종료
+프로세스 목록을 확인해서 `kill -9 [PID번호]` 하거나 아래 명령어로 모든 uvicorn 프로세스 종료.
 ```bash
 pkill -f uvicorn
 ```
@@ -116,9 +116,10 @@ http://dumpit-lb-1591477487.us-east-1.elb.amazonaws.com/
 
 ## 📝 주요 구현 기록 (Troubleshooting)
 
-* **24시간 자동 삭제 로직**: `APScheduler`의 `AsyncIOScheduler`를 도입하여 메인 API 성능에 영향을 주지 않고 1시간 간격으로 백그라운드 청소 작업을 수행합니다.
+* **24시간 자동 삭제 로직**: `APScheduler`의 `AsyncIOScheduler`를 도입하여 메인 API 성능에 영향을 주지 않고 1시간 간격으로 백그라운드 청소 작업을 수행.
 * **보안 컨텍스트 이슈**: HTTP 환경에서 `crypto.randomUUID()`가 작동하지 않는 문제를 해결하기 위해 커스텀 UUID 생성 로직으로 하위 호환성 확보.
 * **실행 순서(TDZ) 문제**: JavaScript의 클래스 및 변수 호이스팅 문제를 고려하여 선언부 최상단 배치로 초기화 에러 해결.
 * **Sticky Session 적용**: 분산 서버 환경에서 파일 기반 DB(SQLite)의 데이터 파편화를 방지하기 위한 세션 고정 전략 수립.
+* **CI/CD 자동화**: GitHub Actions 기반의 CI/CD 자동화를 통해 코드 변경사항의 실시간 운영 서버 반영 환경 구현
 
 ---
