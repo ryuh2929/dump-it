@@ -28,7 +28,8 @@ async def startup():
             
             # 만약 데이터가 하나도 없다면 초기값(0, 0) 생성
             if not stats_entry:
-                session.add(Stats(id=1, total_users=0, total_worries=0))
+                new_stats = Stats(id=1, total_users=0, total_worries=0)
+                session.add(new_stats)
                 await session.commit()
                 print("📊 통계 테이블 초기값이 생성되었습니다.")
 

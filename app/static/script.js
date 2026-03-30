@@ -161,8 +161,8 @@ async function loadStats() {
         const data = await response.json();
         
         // HTML의 해당 ID를 가진 요소에 데이터 삽입
-        document.getElementById('user-count').innerText = data.total_users;
-        document.getElementById('worry-count').innerText = data.total_worries;
+        document.getElementById('user-count').innerText = data.total_users ?? 0;
+        document.getElementById('worry-count').innerText = data.total_worries ?? 0;
     } catch (error) {
         console.error('통계 데이터를 불러오는데 실패했습니다:', error);
     }
