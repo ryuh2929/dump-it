@@ -15,18 +15,19 @@
 ---
 ## 🖥️ 서비스 페이지
 * 메인 페이지
-![2026-02-26-14-41-30메인-페이지](https://github.com/user-attachments/assets/afac29e9-9241-499c-be7b-ccdab7dd5df9)
+![2026-04-02-19-22-41메인-페이지](https://github.com/user-attachments/assets/3aa461b3-3636-4271-bdd3-f1687f59fa6c)
 
 * 텍스트 입력
 ![2026-02-26-14-38-33텍스트-입력](https://github.com/user-attachments/assets/1d750b16-b7d6-4aca-8855-645f540880de)
 
+
 * 모두의 고민 /  내 고민
-![2026-02-26-14-40-29모두의-고민_-내-고민](https://github.com/user-attachments/assets/114ae9a7-6dea-4d4b-8b31-8c41567ae531)
+![2026-04-02-19-24-46모두의-고민_-내-고민](https://github.com/user-attachments/assets/04bb5cc2-50e2-4dd9-8377-edac24891c54)
 
 ---
 
 ## 🔗 시연 영상
-https://youtu.be/IArrVOU3vvg
+[https://youtu.be/IArrVOU3vvg](https://www.youtube.com/watch?v=7v3MoKfVr8w)
 
 ---
 
