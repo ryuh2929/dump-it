@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
@@ -13,15 +14,16 @@ from fastapi.staticfiles import StaticFiles
 app = FastAPI(title="DumpIt API")
 
 # 서버 시작 시 DB 테이블 생성 및 스케줄러 가동
-@app.on_event("startup")
-async def startup():
+# Lifespan 컨텍스트 매니저 정의
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     # 1. 테이블 생성
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
     # 2. 통계 테이블 초기값 설정
     async with AsyncSessionLocal() as session:
-        async with session.begin():
+        async def init_stats():
             # id가 1인 데이터가 있는지 확인
             result = await session.execute(select(Stats).where(Stats.id == 1))
             stats_entry = result.scalars().first()
@@ -33,8 +35,21 @@ async def startup():
                 await session.commit()
                 print("📊 통계 테이블 초기값이 생성되었습니다.")
 
+        await init_stats()
+
     # 3. 스케줄러 시작
     start_scheduler()
+    print("⏰ 스케줄러가 시작되었습니다.")
+
+    yield  # yield 기준으로 위까지가 startup 이벤트, 이후는 shutdown 이벤트
+
+    from .scheduler import scheduler
+    if scheduler.running:
+        scheduler.shutdown()
+        print("🛑 스케줄러가 종료되었습니다.")
+
+# FastAPI 인스턴스 생성 시 lifespan 적용
+app = FastAPI(title="DumpIt API", lifespan=lifespan)
 
 # 1. 고민 저장 API
 @app.post("/worries", response_model=schemas.WorryRead)
