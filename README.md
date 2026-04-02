@@ -55,7 +55,8 @@ https://youtu.be/IArrVOU3vvg
 
 ## 🏗 시스템 아키텍처
 
-사용자가 접속하면 ALB를 통해 EC2 인스턴스의 8000번 포트(Uvicorn)로 연결됩니다. 데이터 일관성을 위해 로드밸런서에서 **Sticky Session**을 활성화하여 단일 SQLite DB 환경에서도 안정적인 사용자 경험을 제공
+사용자가 접속하면 ALB를 통해 EC2 인스턴스의 8000번 포트(Uvicorn)로 연결됩니다. 
+데이터 일관성을 위해 로드밸런서에서 **Sticky Session**을 활성화하여 단일 SQLite DB 환경에서도 안정적인 사용자 경험을 제공
 
 ---
 
@@ -110,6 +111,7 @@ pkill -f uvicorn
 ```
 
 * **데이터 삭제**
+  
 루트 디렉토리에서
 ```bash
 python -m cleanup
