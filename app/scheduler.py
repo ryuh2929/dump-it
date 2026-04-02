@@ -19,6 +19,8 @@ async def delete_old_worries():
     print(f"[{kst_now}] 24시간 지난 고민들을 {result.rowcount}개 청소했습니다.")
 
 def start_scheduler():
+    # 1분마다 실행하는 테스트 코드
+    # scheduler.add_job(delete_old_worries, 'interval', minutes=1)
     # 1시간마다 실행
     scheduler.add_job(delete_old_worries, 'interval', hours=1)
     scheduler.start()
