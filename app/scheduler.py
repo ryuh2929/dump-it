@@ -21,6 +21,6 @@ async def delete_old_worries():
 def start_scheduler():
     # 1분마다 실행하는 테스트 코드
     # scheduler.add_job(delete_old_worries, 'interval', minutes=1)
-    # 1시간마다 실행
-    scheduler.add_job(delete_old_worries, 'interval', hours=1)
+    # 10분마다 실행
+    scheduler.add_job(delete_old_worries, 'interval', minutes=10)
     scheduler.start()
