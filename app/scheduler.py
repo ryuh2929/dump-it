@@ -5,11 +5,12 @@ from .database import engine
 from .models import Worry
 
 scheduler = AsyncIOScheduler()
-kst_now = datetime.now(timezone(timedelta(hours=9))).strftime('%Y-%m-%d %H:%M:%S')
 
 async def delete_old_worries():
     # 현재 시간 기준 24시간 전 시간 계산
     threshold = datetime.now(timezone.utc) - timedelta(hours=24)
+    # KST 기준 현재 시간 문자열로 출력 (UTC+9)
+    kst_now = datetime.now(timezone(timedelta(hours=9))).strftime('%Y-%m-%d %H:%M:%S')
     
     async with engine.begin() as conn:
         # threshold보다 이전에 생성된 데이터 삭제
