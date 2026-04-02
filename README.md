@@ -14,14 +14,13 @@
 
 ---
 ## 🖥️ 서비스 페이지
-* 메인 페이지
+### 메인 페이지
 ![2026-04-02-19-22-41메인-페이지](https://github.com/user-attachments/assets/3aa461b3-3636-4271-bdd3-f1687f59fa6c)
 
-* 텍스트 입력
-![2026-02-26-14-38-33텍스트-입력](https://github.com/user-attachments/assets/1d750b16-b7d6-4aca-8855-645f540880de)
+### 텍스트 입력
+![2026-04-02-19-42-06텍스트-입력](https://github.com/user-attachments/assets/7cbb780a-95e1-4ca2-9823-755cd8bbc143)
 
-
-* 모두의 고민 /  내 고민
+### 모두의 고민 /  내 고민
 ![2026-04-02-19-24-46모두의-고민_-내-고민](https://github.com/user-attachments/assets/04bb5cc2-50e2-4dd9-8377-edac24891c54)
 
 ---
