@@ -23,41 +23,45 @@
 * 모두의 고민 /  내 고민
 ![2026-02-26-14-40-29모두의-고민_-내-고민](https://github.com/user-attachments/assets/114ae9a7-6dea-4d4b-8b31-8c41567ae531)
 
+---
 
 ## 🔗 시연 영상
 https://youtu.be/IArrVOU3vvg
+
+---
 
 ## 🛠 Tech Stack
 <img width="1071" height="510" alt="dumpit stack" src="https://github.com/user-attachments/assets/a36af852-2479-41d2-9c99-373ceadef200" />
 
 ### Frontend
 
-* **HTML5 / CSS3**: 반응형 디자인 및 스타일링.
-* **JavaScript**: 모든 동적 로직 및 API 통신.
-* **Canvas API**: 고민 노드 시스템 및 파티클 애니메이션 엔진 구현.
+* **HTML5 / CSS3**: 반응형 디자인 및 스타일링
+* **JavaScript**: 모든 동적 로직 및 API 통신
+* **Canvas API**: 고민 노드 시스템 및 파티클 애니메이션 엔진 구현
 
 ### Backend
 
-* **FastAPI (Python)**: 비동기 처리를 지원하는 고성능 API 서버.
-* **Uvicorn**: ASGI 서버 엔진.
-* **SQLAlchemy & aiosqlite**: 비동기 방식의 데이터베이스 ORM 및 SQLite 연동.
+* **FastAPI (Python)**: 비동기 처리를 지원하는 고성능 API 서버
+* **Uvicorn**: ASGI 서버 엔진
+* **SQLAlchemy & aiosqlite**: 비동기 방식의 데이터베이스 ORM 및 SQLite 연동
 
 ### Infrastructure & Deployment
 
-* **AWS EC2 (Ubuntu 24.04 LTS)**: 클라우드 서버 호스팅.
-* **AWS Application Load Balancer (ALB)**: 트래픽 분산 및 고정 세션(Sticky Session) 적용.
-* **Local Storage**: 사용자 식별을 위한 고유 UUID 관리.
+* **AWS EC2 (Ubuntu 24.04 LTS)**: 클라우드 서버 호스팅
+* **AWS Application Load Balancer (ALB)**: 트래픽 분산 및 고정 세션(Sticky Session) 적용
+* **Local Storage**: 사용자 식별을 위한 고유 UUID 관리
 
 ---
 
 ## 🏗 시스템 아키텍처
 
-사용자가 접속하면 ALB를 통해 EC2 인스턴스의 8000번 포트(Uvicorn)로 연결됩니다. 데이터 일관성을 위해 로드밸런서에서 **Sticky Session**을 활성화하여 단일 SQLite DB 환경에서도 안정적인 사용자 경험을 제공.
+사용자가 접속하면 ALB를 통해 EC2 인스턴스의 8000번 포트(Uvicorn)로 연결됩니다. 데이터 일관성을 위해 로드밸런서에서 **Sticky Session**을 활성화하여 단일 SQLite DB 환경에서도 안정적인 사용자 경험을 제공
 
 ---
 
-## 📦 설치 및 실행 방법 (Local)
+## 📦 설치 및 실행 방법 (Local & AWS)
 
+### Local
 1. **레포지토리 클론**
 ```bash
 git clone https://github.com/ryuh2929/dump-it.git
@@ -83,6 +87,7 @@ uvicorn app.main:app --reload
 
 ```
 
+### AWS
 * **aws 인스턴스에서 서버 실행**
 ```bash
 cd dump-it/
@@ -104,7 +109,15 @@ nohup python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000 &
 pkill -f uvicorn
 ```
 
-4. **접속**
+* **데이터 삭제**
+루트 디렉토리에서
+```bash
+python -m cleanup
+```
+
+---
+
+## 🔗 **페이지 주소**
 * **로컬 서버**
 
 http://localhost:8000
@@ -112,7 +125,6 @@ http://localhost:8000
 * **aws 서버**
  
 http://dumpit-lb-1591477487.us-east-1.elb.amazonaws.com/
-
 
 ---
 
