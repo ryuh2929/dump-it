@@ -50,6 +50,7 @@
 * **AWS EC2 (Ubuntu 24.04 LTS)**: 클라우드 서버 호스팅
 * **AWS Application Load Balancer (ALB)**: 트래픽 분산 및 고정 세션(Sticky Session) 적용
 * **Local Storage**: 사용자 식별을 위한 고유 UUID 관리
+* **Github Actions**: main 브랜치 업데이트 시 AWS에 자동 배포
 
 ---
 
