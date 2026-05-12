@@ -136,7 +136,7 @@ http://dumpit-lb-1591477487.us-east-1.elb.amazonaws.com/
 
 * **24시간 자동 삭제 로직**: `APScheduler`의 `AsyncIOScheduler`를 도입하여 메인 API 성능에 영향을 주지 않고 10분 간격으로 백그라운드 청소 작업을 수행
 * **보안 컨텍스트 이슈**: HTTP 환경에서 `crypto.randomUUID()`가 작동하지 않는 문제를 해결하기 위해 직접 UUID 생성 로직을 구현하여 하위 호환성 확보
-* **실행 순서(TDZ) 문제**: JavaScript의 클래스 및 변수 호이스팅 문제를 고려하여 선언부 최상단 배치로 초기화 에러 해결
+* **실행 순서(TDZ) 문제**: JavaScript 클래스 초기화 이전 접근으로 발생한 TDZ 오류를 선언 순서 조정으로 해결
 * **데이터 일관성 유지(Sticky Session)**: 분산 서버 환경에서 파일 기반 DB(SQLite)의 데이터 파편화를 방지하기 위한 세션 고정(Sticky Session) 전략 수립
 * **CI/CD 자동화**: GitHub Actions와 AWS EC2를 연동하여 main 브랜치 업데이트 시 EC2에서 pull 하는 자동 배포 파이프라인 구축
 
